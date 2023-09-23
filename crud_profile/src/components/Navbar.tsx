@@ -47,7 +47,7 @@ const Navbar = () => {
         {links.map((link) => (
           <Link key={link.id} href={link.url}>{link.title}</Link>
         ))}
-        <button className='p-1 bg-[#53c28b] text-white cursor-pointer rounded '>
+        <button className='p-1 bg-regal-green text-white cursor-pointer rounded '>
             Logout
         </button>
       </div>

@@ -1,5 +1,6 @@
 import type { Config } from 'tailwindcss'
 
+
 const config: Config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -8,11 +9,24 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      colors:{
+        'regal-green': '#53c28b'
       },
+      keyframes:{
+        move:{
+          'from':{transform:'translateY(-15px)'},
+          'to':{transform:'translateY(0px) scale(1.03)'}
+        }
+      },
+      animation:{
+        move:'move 3s infinite ease alternate',
+      },
+      backgroundImage: {
+        'illustration': "url('/images/illustration.png')",
+        'apps': "url('/images/apps.jpg')",
+        'websites': "url('/images/websites.jpg')",
+      }
+
     },
   },
   plugins: [],
