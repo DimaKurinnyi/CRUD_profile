@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import DarkModeToggle from './DarkModeToggle';
 
 interface NavLinks {
   id: number;
@@ -44,6 +45,7 @@ const Navbar = () => {
     <div className="h-[100px] flex justify-between items-center">
       <Link href="/" className='font-bold text-2xl'>Portfolio</Link>
       <div className=" flex items-center gap-5">
+        <DarkModeToggle/>
         {links.map((link) => (
           <Link key={link.id} href={link.url}>{link.title}</Link>
         ))}

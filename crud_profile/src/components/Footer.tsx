@@ -1,8 +1,8 @@
 import Image from 'next/image';
-import FacebookImage from '../../public/1.png';
-import InstagramImage from '../../public/2.png';
-import TwitterImage from '../../public/3.png';
-import YoutubeImage from '../../public/4.png';
+import FacebookImage from '/public/1.png';
+import InstagramImage from '/public/2.png';
+import TwitterImage from '/public/3.png';
+import YoutubeImage from '/public/4.png';
 
 const Footer = () => {
   return (

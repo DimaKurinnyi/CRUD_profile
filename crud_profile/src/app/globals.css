@@ -12,6 +12,18 @@ body {
   color: var(--foreground-rgb);
   background: rgb(var(--background-rgb));
 }
+.theme{
+  transition: 1s all ease;
+}
+.light {
+  background-color: white;
+  color: #111;
+}
+
+.dark {
+  background-color: rgb(var(--background-rgb));
+  color: #bbb;
+}
 
 .gradient-text {
   background: linear-gradient(to bottom, #194c33, #bbb);
