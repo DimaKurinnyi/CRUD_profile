@@ -3,9 +3,9 @@
 import { createContext, useState } from 'react';
 
 type  Theme = 'light'|'dark';
-type ThemeContextType = { mode: Theme; toggle: () => void };
+type ThemeContextType = { mode: Theme; toggle: () => void } | null
 
-export const ThemeContext = createContext<ThemeContextType | null>(null);
+export const ThemeContext = createContext<ThemeContextType >(null);
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [mode, setMode] = useState<Theme>('dark');
