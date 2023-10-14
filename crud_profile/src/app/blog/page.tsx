@@ -4,11 +4,11 @@ import { Key } from 'react';
 
 async function getData() {
   const res = await fetch('http://localhost:3000/api/posts', {
-    cache: 'no-store',
+    cache: 'force-cache',
   });
 
   if (!res.ok) {
-    throw new Error('Failed to fetch data');
+    throw new Error('Failed to fetch ');
   }
 
   return res.json();
@@ -18,9 +18,10 @@ const Blog = async () => {
   const data = await getData();
   return (
     <div className="flex items-center gap-12 mb-12">
-      {data.map((post: { id: Key; image: string; title: string; desc: string }) => (
-        <Link href="/blog/id" key={post.id}>
+      {data.map((post: { _id: Key; image: string; title: string; desc: string }) => (
+        <Link href={`/blog/${post._id}`} key={post._id}>
           <div className="">
+            
             <Image src={post.image} alt="" width={400} height={250} className="object-cover" />
           </div>
           <div className="">

@@ -1,19 +1,36 @@
+'use client'
+import { GetStaticPropsContext } from 'next';
 import Image from 'next/image';
+type ParamsType= {
+  params:{id: string}
+}
 
-const page = () => {
+async function getData(id:string) {
+  const res = await fetch(`http://localhost:3000/api/posts/${id}`,{
+    cache: 'force-cache',
+  });
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch ');
+  }
+
+  return res.json();
+}
+
+const page =async ({params}:ParamsType) => {
+  const data = await getData(params.id);
+  console.log(data)
   return (
     <div>
       <div className="flex">
         <div className="flex-1 flex flex-col justify-between gap-10 ">
-          <h1 className='text-4xl  font-bold'>Lorem ipsum, dolor sit amet consectetur adipisicing.</h1>
+          <h1 className='text-4xl  font-bold'>{data.title}</h1>
           <p className='text-lg font-light'>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quidem repellendus placeat
-            illum beatae nulla consequuntur cumque alias molestiae enim aspernatur! Cum et, sequi
-            aspernatur nesciunt voluptatibus consectetur est autem minus.
+            {data.desc}
           </p>
           <div className="flex items-center gap-2">
             <Image
-              src="https://images.pexels.com/photos/1173651/pexels-photo-1173651.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              src={data.image}
               width={40}
               height={40}
               alt=""
@@ -24,7 +41,7 @@ const page = () => {
         </div>
         <div className="flex-1 h-[300px] relative">
         <Image
-              src="https://images.pexels.com/photos/1173651/pexels-photo-1173651.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+              src={data.image}
              fill={true}
               alt=""
               className="object-cover"
