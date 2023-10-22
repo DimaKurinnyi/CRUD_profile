@@ -8,6 +8,6 @@ export const GET = async (request: any) => {
     const posts = await Post.find()
 
     return new NextResponse(JSON.stringify(posts),{status:200})
-  }catch(err){return new NextResponse('Error', { status: 500 });}
+  }catch(err){return new NextResponse('Error1', { status: 500 });}
   
 };

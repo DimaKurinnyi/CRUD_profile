@@ -7,7 +7,7 @@ type ParamsType= {
 
 async function getData(id:string) {
   const res = await fetch(`http://localhost:3000/api/posts/${id}`,{
-    cache: 'force-cache',
+    cache: 'no-store',
   });
 
   if (!res.ok) {
