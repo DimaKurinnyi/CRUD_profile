@@ -18,11 +18,11 @@ const Blog = async () => {
   const data = await getData();
   return (
     <div className="flex items-center gap-12 mb-12">
-      {data.map((post: { _id: Key; image: string; title: string; desc: string }) => (
+      {data.map((post: { _id: Key; img: string; title: string; desc: string }) => (
         <Link href={`/blog/${post._id}`} key={post._id}>
           <div className="">
             
-            <Image src={post.image} alt="" width={400} height={250} className="object-cover" />
+            <Image src={post.img} alt="" width={400} height={250} className="object-cover" />
           </div>
           <div className="">
             <h1 className="font-bold text-6xl mb-3">{post.title}</h1>

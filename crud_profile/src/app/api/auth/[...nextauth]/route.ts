@@ -2,8 +2,8 @@ import User from '@/models/User';
 import connect from '@/utils/db';
 import bcrypt from 'bcryptjs';
 import NextAuth from 'next-auth/next';
+import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
-import CredentialsProvider from "next-auth/providers/credentials";
 
 const handler = NextAuth({
   providers: [
@@ -19,28 +19,25 @@ const handler = NextAuth({
         try {
           const user = await User.findOne({ email: credentials.email });
           if (user) {
-            const isPasswordCorrect = await bcrypt.compare(
-              credentials.password,
-              user.password
-            );
+            const isPasswordCorrect = await bcrypt.compare(credentials.password, user.password);
 
             if (isPasswordCorrect) {
               return user;
             } else {
               throw new Error('Wrong password');
             }
-          }else{
+          } else {
             throw new Error('user not found');
           }
-        } catch (error) {
-          throw new Error(error)
+        } catch (error:any) {
+          throw new Error(error);
         }
       },
     }),
   ],
-  pages:{
-    error:'/dashboard/login',
-  }
+  pages: {
+    error: '/dashboard/login',
+  },
 });
 
 export { handler as GET, handler as POST };

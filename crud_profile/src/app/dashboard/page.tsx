@@ -1,13 +1,88 @@
-'use client'
-import { useSession } from 'next-auth/react'
-import React from 'react'
+'use client';
+import { useSession } from 'next-auth/react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { Key } from 'react';
+import useSWR from 'swr';
 
 const Dashboard = () => {
-  const session = useSession()
-  console.log(session)
-  return (
-    <div>page</div>
-  )
-}
+  const { data: session, status } = useSession();
+  const router = useRouter();
+  const fetcher = (...args) => fetch(...args).then((res) => res.json());
 
-export default Dashboard
+  const { data, mutate, error, isLoading } = useSWR(
+    `/api/posts?username=${session?.user?.name}`,
+    fetcher,
+  );
+
+  if (status === 'loading') {
+    return <p>Loading...</p>;
+  }
+  if (status === 'unauthenticated') {
+    router?.push('/dashboard/login');
+  }
+  console.log(data);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const title = e.target[0].value;
+    const desc = e.target[1].value;
+    const img = e.target[2].value;
+    const content = e.target[3].value;
+
+    try {
+      await fetch('/api/posts', {
+        method: 'POST',
+        body: JSON.stringify({
+          title,
+          desc,
+          img,
+          content,
+          username: session?.user?.name,
+        }),
+      });
+      mutate();
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
+  if (status === 'authenticated') {
+    return (
+      <div className="flex gap-24 ">
+        <div className="flex-1">
+          {data?.map((post: { _id: Key; img: string; title: string; desc: string }) => (
+            <div className=" flex items-center justify-between my-12" key={post._id}>
+              <div className=" relative ">
+                <Image
+                  src={post.img}
+                  alt=""
+                  width={200}
+                  height={100}
+                  className="object-cover poi"
+                />
+              </div>
+              <h2 className="">{post.title}</h2>
+              <span className="cursor-pointer text-[red] ">X</span>
+            </div>
+          ))}
+        </div>
+        <form className="flex-1 flex flex-col gap-5" onSubmit={handleSubmit}>
+          <h1 className="">Add new post</h1>
+          <input
+            type="text"
+            className="p-4 bg-transparent border-[2px] border-[#bbb] rounded font-bold text-xl "
+            placeholder="Title"
+          />
+          <input type="text" className="" placeholder="Desc" />
+          <input type="text" className="" placeholder="Image" />
+          <textarea placeholder="Content" id="" cols={30} rows={10} className=""></textarea>
+          <button className="p-4 cursor-pointer bg-regal-green rounded-md  text-white">Send</button>
+        </form>
+      </div>
+    );
+  }
+};
+
+export default Dashboard;

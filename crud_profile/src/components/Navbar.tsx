@@ -1,7 +1,7 @@
 'use client';
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import DarkModeToggle from './DarkModeToggle';
-import { signOut, useSession } from 'next-auth/react';
 
 interface NavLinks {
   id: number;
@@ -43,18 +43,29 @@ const links: NavLinks[] = [
 ];
 
 const Navbar = () => {
-  const session = useSession()
+  const { data: session, status } = useSession();
   return (
     <div className="h-[100px] flex justify-between items-center">
-      <Link href="/" className='font-bold text-2xl'>Portfolio</Link>
+      <Link href="/" className="font-bold text-2xl">
+        Portfolio
+      </Link>
       <div className=" flex items-center gap-5">
-        <DarkModeToggle/>
+        <DarkModeToggle />
         {links.map((link) => (
-          <Link key={link.id} href={link.url}>{link.title}</Link>
+          <Link key={link.id} href={link.url}>
+            {link.title}
+          </Link>
         ))}
-        {session.status==='authenticated' && <button className='p-1 bg-regal-green text-white cursor-pointer rounded ' onClick={signOut}>
+        {status === 'authenticated' && (
+          <button
+            className="p-1 bg-regal-green text-white cursor-pointer rounded "
+            onClick={(e) => {
+              e.preventDefault();
+              signOut();
+            }}>
             Logout
-        </button>}
+          </button>
+        )}
       </div>
     </div>
   );

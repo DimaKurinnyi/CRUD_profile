@@ -30,18 +30,18 @@ const page =async ({params}:ParamsType) => {
           </p>
           <div className="flex items-center gap-2">
             <Image
-              src={data.image}
+              src={data.img}
               width={40}
               height={40}
               alt=""
               className="object-cover rounded-[50%]"
             />
-            <span className="">Joni Jonson</span>
+            <span className="">{data.username}</span>
           </div>
         </div>
         <div className="flex-1 h-[300px] relative">
         <Image
-              src={data.image}
+              src={data.img}
              fill={true}
               alt=""
               className="object-cover"
