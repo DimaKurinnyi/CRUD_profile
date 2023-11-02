@@ -17,3 +17,13 @@ export const GET = async (request:any,{params}:ParamsType) => {
   }catch(err){return new NextResponse('Error', { status: 500 });}
   
 };
+export const DELETE = async (request:any,{params}:ParamsType) => {
+  const {id} =params
+try{
+  await connect()
+   await Post.findByIdAndDelete(id)
+
+  return new NextResponse('Post has been deleted ',{status:200})
+}catch(err){return new NextResponse('Error', { status: 500 });}
+
+};
