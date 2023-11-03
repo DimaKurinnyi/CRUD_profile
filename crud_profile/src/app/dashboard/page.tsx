@@ -49,7 +49,7 @@ const Dashboard = () => {
       console.log(error);
     }
   };
-  const handleDele = async (id: string) => {
+  const handleDele = async (id: Key) => {
     try {
       await fetch(`/api/posts/${id}`,{method:'DELETE'});
       mutate()
@@ -60,17 +60,17 @@ const Dashboard = () => {
 
   if (status === 'authenticated') {
     return (
-      <div className="flex gap-24 ">
+      <div className="flex gap-24 flex-col-reverse ">
         <div className="flex-1">
           {data?.map((post: { _id: Key; img: string; title: string; desc: string }) => (
             <div className=" flex items-center justify-between my-12" key={post._id}>
-              <div className=" relative ">
+              <div className="">
                 <Image
                   src={post.img}
                   alt=""
                   width={200}
                   height={100}
-                  className="object-cover poi"
+                  className="object-cover "
                 />
               </div>
               <h2 className="">{post.title}</h2>

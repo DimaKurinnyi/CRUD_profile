@@ -1,6 +1,9 @@
 'use client';
+import { ThemeContext } from '@/context/ThemeContext';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { useContext, useState } from 'react';
+import { FaBars, FaTimes } from 'react-icons/fa';
 import DarkModeToggle from './DarkModeToggle';
 
 interface NavLinks {
@@ -43,19 +46,33 @@ const links: NavLinks[] = [
 ];
 
 const Navbar = () => {
+  const [nav, setNav] = useState<boolean>(false);
   const { data: session, status } = useSession();
+  const { mode } = useContext(ThemeContext);
+
+  const handleClick = () => {
+    setNav((event) => !event);
+  };
+
+  const navLinks = links.map((link) => (
+    <Link key={link.id} href={link.url}>
+      {link.title}
+    </Link>
+  ))
   return (
-    <div className="h-[100px] flex justify-between items-center">
-      <Link href="/" className="font-bold text-2xl">
+    <div className="h-[100px] flex justify-between items-center ">
+      <Link href="/" className="font-bold text-2xl z-10">
         Portfolio
       </Link>
-      <div className=" flex items-center gap-5">
-        <DarkModeToggle />
-        {links.map((link) => (
+      <DarkModeToggle />
+      <div className=" hidden md:flex items-center gap-5">
+        
+        {/* {links.map((link) => (
           <Link key={link.id} href={link.url}>
             {link.title}
           </Link>
-        ))}
+        ))} */}
+        {navLinks}
         {status === 'authenticated' && (
           <button
             className="p-1 bg-regal-green text-white cursor-pointer rounded "
@@ -67,6 +84,29 @@ const Navbar = () => {
           </button>
         )}
       </div>
+      {/* Mobile button */}
+      <div onClick={handleClick} className="cursor-pointer md:hidden block z-10">
+        {!nav ? <FaBars size={20} /> : <FaTimes size={20} />}
+      </div>
+      {/* Mobile menu */}
+      <div
+        className={
+          nav
+            ? `md:hidden  top-0 left-0 right-0 bottom-0 flex flex-col gap-5 justify-center items-center w-full min-h-screen text-center ease-in duration-500 fixed ${mode}`
+            : 'md:hidden absolute top-0 left-[-200%] right-0 bottom-0 flex justify-center items-center w-full h-screen text-center ease-in duration-500 flex-col gap-5'
+        } onClick={handleClick}>
+          {navLinks}
+          {status === 'authenticated' && (
+          <button
+            className="p-1 bg-regal-green text-white cursor-pointer rounded "
+            onClick={(e) => {
+              e.preventDefault();
+              signOut();
+            }}>
+            Logout
+          </button>
+        )}
+        </div>
     </div>
   );
 };
